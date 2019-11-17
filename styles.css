@@ -1,0 +1,207 @@
+body
+{
+  font-family: 'Spectral';
+  font-size: 20px;  
+  margin: 2% 5% 2% 5%;
+  word-wrap: break-word;
+	background: #181a1b;
+  padding-top: 65px;
+  color: white;
+}
+
+div, p, h1, h2, h3
+{
+  padding-bottom: 0em;  
+  margin: 0;
+}
+
+img 
+{
+  max-height: 2.5em;
+  max-width: 2.5em;
+  border-top-left-radius: 50% 50%;
+  border-top-right-radius: 50% 50%;
+  border-bottom-right-radius: 50% 50%;
+  border-bottom-left-radius: 50% 50%;
+}
+
+/*----------------*/
+/*-- NAVTOP.php --*/
+/*----------------*/
+/*----------------*/
+#mainNav
+{
+  position: absolute;
+  background-color: white; 
+  transition: top 0.8s;
+}
+.fixed-top 
+{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.bg-dark
+{
+  background-color: #111213 !important;
+}
+#mainNav .navbar-brand
+{
+  font-weight: 800;
+  color: #ffffff;
+}
+#mainNav .navbar-nav > li.nav-item > a
+{
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: 1px;
+}
+
+#mainNav a:hover 
+{
+  color: 
+  #b30062;
+}
+
+#mainNav a
+{
+  color: #ffffff;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link 
+{
+  color: #fff;
+  background-color: #000000;
+}
+.nav-pills .nav-link 
+{
+  border-radius: .25rem;
+}
+.nav-link:focus, .nav-link:hover 
+{
+  text-decoration: none;
+}
+
+
+/*----------------*/
+/*--- BODY.php ---*/
+/*----------------*/
+/*----------------*/
+
+.jumbotron
+{
+  padding: 2rem 2rem;
+  margin-bottom: 2rem;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: .3rem;
+  color: rgb(255, 255, 255);
+}
+.jumbotron hr
+{
+  height: 1px;
+  background-color: rgb(211, 0, 88);
+  border: none;
+  margin: 0em;
+}
+.btn-primary
+{
+  
+  margin-top: 5px;
+  color: #fff;
+  background-color: #000000;
+  border-color: #000000;
+}
+.btn-primary:hover
+{
+  color: #fff;
+  background-color: #0f0f0fb2;
+  border-color: #3ee2ff;
+}
+
+/* Posts Previews */
+.post-preview
+{
+  color: white;
+}
+.post-title a
+{
+  text-decoration: none;
+}
+.post-title a:hover
+{
+  color: rgb(0, 165, 211);
+  text-decoration: none;
+}
+
+/* Posts Title */
+.post-preview > .post-title
+{
+  font-size: 30px;
+  border-radius: 5px;   
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding: 20px;  
+  padding-top: 20px;
+  padding-bottom: 15px;
+	background: #111213;
+}
+.post-preview > .post-title a
+{
+  font-size: 30px;
+  margin-bottom: 1px;  
+  color: white;
+}
+.post-preview > .post-title a:hover
+{
+  font-size: 30px;
+  margin-bottom: 1px;
+  color: #3ee2ff;
+}
+.post-preview > .post-title hr
+{ 
+  height: 1px;
+  background-color: white;
+  border: none;
+  margin-top: 0em; 
+  margin-bottom: 5px; 
+}
+.post-preview > .post-content
+{ 
+  color: black;
+  background: white;
+  padding: 20px;  
+  padding-top: 20px;
+  padding-bottom: 15px; 
+	background: #e4eaf0;
+}
+
+/* Posts User and Date */
+.post-preview > .post-meta
+{
+  font-size: 15px;
+  margin-top: 0em;
+  padding: 20px;  
+  padding-top: 5px;
+  padding-bottom: 0px;
+  color: #868e96;
+	background: #111213;
+}
+.post-preview > .post-read-edit
+{
+	background: #111213;
+  border-radius: 5px;  
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  padding: 20px;  
+  padding-top: 0px;
+  padding-bottom: 5px;
+  margin-bottom: 10px; 
+}
+.post-preview > .post-read-edit a
+{
+  font-size: 18px;
+  margin-top: 0em;
+  color: white;
+}
