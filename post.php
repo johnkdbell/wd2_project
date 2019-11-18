@@ -8,6 +8,34 @@
     $statement->execute();
     $post = $statement->fetch();
 
+    
+    if (!empty($_POST['commentContent']))
+    {
+        echo "Its getting inside.";
+
+        require_once('connect.php');
+        session_start();
+        header("Location: post.php?postID=".$postID);
+
+        $postID = $post['postID'];
+        $commentAuthor = $_SESSION['user']['userID'];
+        $commentDate = date('Y-m-d h:i:sa');
+        $commentContent = filter_input(INPUT_POST, 'commentContent', FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $query = "INSERT INTO project_blog_comments (postID, commentAuthor, commentDate, commentContent) VALUES (:postID, :commentAuthor, :commentDate, :commentContent)";
+        $commentstatement = $db->prepare($query);
+        $commentstatement->bindValue(':postID', $postID, PDO::PARAM_INT);
+        $commentstatement->bindValue(':commentAuthor', $commentAuthor);
+        $commentstatement->bindValue(':commentDate', $commentDate);
+        $commentstatement->bindValue(':commentContent', $commentContent);
+
+        $commentstatement->execute();
+        exit();
+
+    }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -69,7 +97,34 @@
         </form>
     </div>
 
-    
+    <form method="post" action="post.php?postID=<?=$postID ?>">
+    <div class="row">
+        Commenting as:
+    </div>
+    <div class="row form-element">
+        <?php
+            $userquery2 = "SELECT userLogin FROM project_blog_users WHERE userID = ".$_SESSION['user']['userID'];
+            $stmt3 = $db->prepare($userquery2); // Returns a PDOStatement object.
+            $stmt3->execute(); // The query is now executed.
+            $userdisplayname = $stmt3->fetch();
+        ?>
+        <h6><?= $userdisplayname['userLogin'] ?></h6>
+    </div>
+    <div class="row">
+        <label for="commentContent"><h3>Comment: </h3></label>
+    </div>
+    <div class="row form-element">
+        <textarea class="form-element" id="commentContent" name="commentContent" row="100" cols="200"></textarea>
+    </div>
+
+    <input type="hidden" id="commentAuthor" name="commentAuthor" value="<?= $_SESSION['user']['userID'] ?>">
+    <input type="hidden" id="postID" name="postID">
+    <input type="hidden" id="commentDate" name="commentDate">
+
+    <div class="row form-element">
+        <input type="submit" value="Comment">
+    </div>
+    </form>
 
     <script 
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 

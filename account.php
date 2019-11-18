@@ -1,7 +1,4 @@
-<?php
 
-
-?>
 
 <!doctype html>
 <html lang="en">
@@ -20,32 +17,25 @@
     
     <div class="container-fluid">
 
-        <?php if(isset($_SESSION['user']['userEmail'])): ?>
-            
-            <div class="jumbotron">
-                <h1 class="display-1">Salutations!</h1>
-                <p>
-                    This is a safe-space.
-                </p>
-                <hr>
-                <p>
-                    Please do not say bad things.
-                </p>
-                <p>
-                    <a class="btn btn-primary btn-lg" href="create.php" role="button">
-                        Create New Post
-                    </a>
-                </p>
-            </div> 
-        <?php else: ?>
+        <form method="post" enctype="multipart/form-data" action="upload.php"> 
+            <label for="image">Image Filename:</label>
+            <input type="file" name="image" id="image">
+            <input type="submit" name="submit" value="Upload Image">
+        </form>
 
-        <?php endif; ?>      
-        
-        <div class="container-fluid">
-            <div class="row">
-                <?php include("anatomy/body.php"); ?>   
-            </div>
-        </div>               
+        <p><?=$_SESSION['user']['userID']?><p>
+
+        <?php if (isset($_FILES['image']) && $_FILES['image']['error'] > 0): ?>
+
+        <p>Error Number: <?= $_FILES['image']['error'] ?></p>
+
+        <?php elseif (isset($_FILES['image'])): ?>
+
+        <p>Client-Side Filename: <?= $_FILES['image']['name'] ?></p>
+        <p>Apparent Mime Type:   <?= $_FILES['image']['type'] ?></p>
+        <p>Size in Bytes:        <?= $_FILES['image']['size'] ?></p>
+        <p>Temporary Path:       <?= $_FILES['image']['tmp_name'] ?></p>
+        <?php endif ?>
 
     </div>
 
