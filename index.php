@@ -2,6 +2,31 @@
     require_once('connect.php');
 
     $query = "SELECT * FROM project_blog_posts";
+    
+    if(isset($_GET['orderBy']))
+    {
+        $sort = $_GET["orderBy"];
+        if($sort == "author")
+        {
+            $query = "SELECT * FROM project_blog_posts INNER JOIN project_blog_users ON project_blog_posts.userID = project_blog_users.userID ORDER BY project_blog_users.userLogin DESC";
+        }
+        if($sort == "comments")
+        {
+            $query = "SELECT * FROM project_blog_posts ORDER BY postCommentCount";
+        }
+
+        if($sort == "newest to oldest")
+        {
+            $query = "SELECT * FROM project_blog_posts ORDER BY postDate ASC";
+        }
+
+        if($sort == "oldest to newest")
+        {
+            $query = "SELECT * FROM project_blog_posts ORDER BY postDate DESC";
+        }
+
+    }
+    
     $statement = $db->prepare($query);
     $statement->execute();
     $fullblog = $statement->fetchAll();
@@ -19,6 +44,7 @@
         $content = $contentRemaining? substr($contentCut, 0, $contentRemaining) : substr($contentCut, 0);
         return $content + "...";
     }
+
 
 ?>
 
@@ -51,9 +77,19 @@
                     Please do not say bad things.
                 </p>
                 <p>
+                <div class="buttons">
                     <a class="btn btn-primary btn-lg" href="create.php" role="button">
                         Create New Post
                     </a>
+                    <?php if(isset($_SESSION['user']['userEmail'])): ?>
+            <form action="index.php" method="get">
+            <input type="submit" name="orderBy" value="newest to oldest" />
+            <input type="submit" name="orderBy" value="oldest to newest" />
+            <input type="submit" name="orderBy" value="author" />
+            <input type="submit" name="orderBy" value="comments" />
+            </form>
+            </div>            
+        <?php endif; ?>
                 </p>
             </div> 
         <?php else: ?>
@@ -61,6 +97,7 @@
         <?php endif; ?>      
         
         <div class="container-fluid">
+
             <div class="row">
                 <?php include("anatomy/body.php"); ?>   
             </div>

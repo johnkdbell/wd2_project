@@ -32,13 +32,6 @@
         { 
             move_uploaded_file($temporary_image_path, $new_image_path);
 
-            require_once('connect.php');
-            session_start();
-            
-            $query = "INSERT INTO project_blog_users (userAvatar) VALUES (:userAvatar)";
-            $statement = $db->prepare($query);
-            $statement->bindValue(':userAvatar', $new_image_path);
-
             print_r($new_image_path);
         }
     }

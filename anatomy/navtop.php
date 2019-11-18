@@ -52,7 +52,7 @@
             
         </div>
     
-        <div">
+        <div>
             <ul class="nav nav-pills flex-column flex-sm-row ml-auto">
                 <?php if(isset($_SESSION['user']['userEmail'])): ?>
                 

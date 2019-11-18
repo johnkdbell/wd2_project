@@ -11,8 +11,6 @@
     
     if (!empty($_POST['commentContent']))
     {
-        echo "Its getting inside.";
-
         require_once('connect.php');
         session_start();
         header("Location: post.php?postID=".$postID);
@@ -30,6 +28,12 @@
         $commentstatement->bindValue(':commentContent', $commentContent);
 
         $commentstatement->execute();
+
+        $setCommentCount = "UPDATE project_blog_posts SET postCommentCount = postCommentCount + 1 WHERE postID = " . $post['postID'];
+        $statement4 = $db->prepare($setCommentCount);
+        $statement4->execute();
+
+
         exit();
 
     }
@@ -63,41 +67,8 @@
         <p class="post-preview"><?= $post['postDate'] ?></p>
         <br>
         <br>
-        <p>Comments</p>
-        <?php
-            $commentQuery = "SELECT * FROM project_blog_comments
-                             LEFT JOIN project_blog_posts
-                             ON project_blog_comments.commentID = project_blog_posts.commentID
-                             WHERE project_blog_posts.postID = " . $post['postID'];
-            $statement2 = $db->prepare($commentQuery);
-            $statement2->execute();
-            $comments = $statement2->fetchAll();
-        ?>
-
-        <?php foreach($comments as $comment): ?>
-
-        <?php
-            $userLoginQuery = "SELECT userLogin FROM project_blog_users
-                               WHERE userID = " . $comment['userID'];
-            $statement3 = $db->prepare($userLoginQuery);
-            $statement3->execute();
-            $userLogin = $statement3->fetch();
-        ?>
-
-        <p><?= $userLogin['userLogin'] ?></p>
-        <p><?= $comment['commentContent'] ?></p>
-        <p><?= $comment['commentDate'] ?></p>
         
-        <?php endforeach; ?>
-
-        <br>
-        <br>        
-        <form method="post" action="index.php">
-            <input type="submit" value="Return">
-        </form>
-    </div>
-
-    <form method="post" action="post.php?postID=<?=$postID ?>">
+        <form method="post" action="post.php?postID=<?=$postID ?>">
     <div class="row">
         Commenting as:
     </div>
@@ -125,6 +96,46 @@
         <input type="submit" value="Comment">
     </div>
     </form>
+
+    <br><br>
+
+    <p>Comments</p>
+        <?php
+            $commentQuery = "SELECT * FROM project_blog_comments
+                             LEFT JOIN project_blog_posts
+                             ON project_blog_comments.postID = project_blog_posts.postID
+                             WHERE project_blog_comments.postID = " . $post['postID'];
+            $statement2 = $db->prepare($commentQuery);
+            $statement2->execute();
+            $comments = $statement2->fetchAll();
+        ?>
+
+        <?php foreach($comments as $comment): ?>
+
+        <?php
+            $userLoginQuery = "SELECT userLogin FROM project_blog_users
+                               WHERE userID = " . $comment['commentAuthor'];
+            $statement3 = $db->prepare($userLoginQuery);
+            $statement3->execute();
+            $userLogin = $statement3->fetch();
+        ?>
+
+        <h3><?= $userLogin['userLogin'] ?></h3>
+        <p><?= $comment['commentContent'] ?></p>
+        <p><?= $comment['commentDate'] ?></p>
+        <br>
+        
+        <?php endforeach; ?>
+
+        <br>
+        <br>        
+        <form method="post" action="index.php">
+            <input type="submit" value="Return">
+        </form>
+
+    </div>
+
+   
 
     <script 
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 

@@ -6,7 +6,7 @@
             
             <!-- Creates posts/ Posts Previews -->
             <?php if ($i < 10): ?>
-
+                
             <div class="post-preview">
                 <!-- Posts Title-->
                 <h1 class="post-title">
@@ -55,8 +55,18 @@
                         <a href="edit.php?postID=<?= $project_blog_posts[$i]['postID']?>">
                             Edit
                         </a>
-
+                        
                         <?php endif; ?>
+
+                        <?php
+                            $commentQuery = "SELECT * FROM project_blog_comments WHERE postID = ".$project_blog_posts[$i]['postID'];
+                            $statement3 = $db->prepare($commentQuery);
+                            $statement3->execute();
+                            $commentNumber = $statement3->fetchAll();
+                        ?>
+
+                        <p><?= count($commentNumber) ?> Comments</p>
+
                     </p>
                 </div>
         
