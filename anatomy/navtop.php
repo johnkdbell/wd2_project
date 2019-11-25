@@ -3,6 +3,7 @@
     if(isset($_SESSION['user']['userEmail']))
     {
         $userLogin = $_SESSION['user']['userLogin'];
+        $userAvatar = $_SESSION['user']['userAvatar'];
     }
 ?>
 
@@ -12,10 +13,10 @@
      id="mainNav">
     <div class="container" id="navbar">
         <?php if(isset($_SESSION['user']['userEmail'])): ?>
-
+            
             <p>
                 <a class="navbar-brand" href="index.php">            
-                    <img src="images/Johnny.png" alt="user_avatar">                
+                    <img src="<?= $userAvatar ?>" alt="user_avatar">                
                     <?= $userLogin ?>
                 </a>
             </p>
@@ -28,8 +29,6 @@
             </p>
         <?php endif; ?>
             
-        
-
     <div>
         
             <ul class="nav nav-pills flex-column flex-sm-row ml-auto">
@@ -57,7 +56,7 @@
                 <?php if(isset($_SESSION['user']['userEmail'])): ?>
                 
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php">Account</a>
+                        <a class="nav-link" href="account.php">Account</a>
                     </li>
 
                     <li class="nav-item">

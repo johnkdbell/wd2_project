@@ -9,6 +9,12 @@
     $statement->execute();
     $post = $statement->fetch();
 
+    $queryTag = "SELECT DISTINCT tagName FROM project_blog_tags WHERE tagPostID = " . $postID;
+    $statement2 = $db->prepare($queryTag);
+    $statement2->execute();
+    $tags = $statement2->fetchAll();
+
+
 ?>
 
 <!doctype html>
@@ -31,8 +37,8 @@ plugins: [
 'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
 'save table contextmenu directionality emoticons template paste textcolor'
 ],
-toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
-});
+toolbar: 'insertfile undo redo | fontselect fontsizeselect formatselect | bold underline italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons',
+menubar: false});
 </script>
 </head>
 <body>                     
@@ -48,6 +54,21 @@ toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncent
             <br>
             <textarea rows="4" cols="50" name="postContent" placeholder="Write your post here..."></textarea>
             <br>
+            <div class="input">            
+            <input type="hidden" id="tagID" name="tagID">
+            <input type="hidden" id="tagPostID" name="tagPostID" value="<?= $postID ?>">
+                <select name="tagName">
+                    <option>Existing tags:</option>
+                    <?php foreach($tags as $tag): ?>
+                        <option><?= $tag['tagName'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+
+                Add a tag:
+                <input type="text" id="tagName" name="tagName">
+            </div>
+            <br>
+
             <input type="submit" value="Post">
         </div>
     </form> 
@@ -55,6 +76,8 @@ toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncent
             <input type="submit" value="Return">
     </form>
 </div>
+
+
 
     </div>
     <script 

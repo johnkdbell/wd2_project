@@ -33,11 +33,9 @@
         $statement4 = $db->prepare($setCommentCount);
         $statement4->execute();
 
-
         exit();
 
     }
-
 
 
 ?>
@@ -60,7 +58,7 @@
         
         <h2 class="post-preview"><?= $post['postHeading'] ?></h2>
         <br>
-        <p class="post-preview"><?= $post['postContent'] ?></p>
+        <p class="post-preview"><?= html_entity_decode($post['postContent']) ?></p>
         <br>
         <br>
         
@@ -113,8 +111,7 @@
         <?php foreach($comments as $comment): ?>
 
         <?php
-            $userLoginQuery = "SELECT userLogin FROM project_blog_users
-                               WHERE userID = " . $comment['commentAuthor'];
+            $userLoginQuery = "SELECT userLogin FROM project_blog_users WHERE userID = " . $comment['commentAuthor'];
             $statement3 = $db->prepare($userLoginQuery);
             $statement3->execute();
             $userLogin = $statement3->fetch();

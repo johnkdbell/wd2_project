@@ -42,7 +42,7 @@
         $contentCut = substr($project_blog_posts[$i]['postContent'], 0, 200);
         $contentRemaining = strrpos($contentCut, ' ');
         $content = $contentRemaining? substr($contentCut, 0, $contentRemaining) : substr($contentCut, 0);
-        return $content + "...";
+        return strip_tags(html_entity_decode($content));
     }
 
 

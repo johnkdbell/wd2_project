@@ -1,8 +1,15 @@
 <?php
+
+    require('connect.php');
+
+    session_start();
+
+
     function file_upload_path($original_filename, $upload_subfolder_name = 'avatars')
     {
        $current_folder = dirname(__FILE__);
-       $path_segments = [$current_folder, $upload_subfolder_name, basename($original_filename)];
+       $path_segments = [$upload_subfolder_name, basename($original_filename)];
+
        return join(DIRECTORY_SEPARATOR, $path_segments);
     }
 
@@ -32,7 +39,16 @@
         { 
             move_uploaded_file($temporary_image_path, $new_image_path);
 
-            print_r($new_image_path);
+            $query = "UPDATE project_blog_users SET userAvatar = :userAvatar WHERE userID = " . $_SESSION['user']['userID'];
+            $statement = $db->prepare($query);
+            $statement->bindvalue(':userAvatar', $new_image_path);
+            $statement->execute();
+
+            $path_segments = ['avatars', basename($_FILES['image']['name'])];
+       
+            $_SESSION['user']['userAvatar'] = join(DIRECTORY_SEPARATOR, $path_segments);
+
+            header("Location: account.php");
         }
     }
 

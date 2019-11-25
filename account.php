@@ -15,7 +15,7 @@
 
     <?php include("anatomy/navtop.php"); ?>
     
-    <div class="container-fluid">
+    <div class="container-fluid">   
 
         <form method="post" enctype="multipart/form-data" action="upload.php"> 
             <label for="image">Image Filename:</label>
