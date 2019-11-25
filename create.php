@@ -21,6 +21,19 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css" type="text/css">
+    
+    <script src="js/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+tinymce.init({
+selector: 'textarea',
+plugins: [
+'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+'save table contextmenu directionality emoticons template paste textcolor'
+],
+toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+});
+</script>
 </head>
 <body>                     
     <?php include("anatomy/navtop.php"); ?>
