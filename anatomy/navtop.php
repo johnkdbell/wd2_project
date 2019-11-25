@@ -1,5 +1,9 @@
 <?php
-    session_start();
+    if (session_status() == PHP_SESSION_NONE)
+    {
+        session_start();
+    }
+
     if(isset($_SESSION['user']['userEmail']))
     {
         $userLogin = $_SESSION['user']['userLogin'];
@@ -16,7 +20,7 @@
             
             <p>
                 <a class="navbar-brand" href="index.php">            
-                    <img src="<?= $userAvatar ?>" alt="user_avatar">                
+                    <img id="userAvatar" src="<?= $userAvatar ?>" alt="user_avatar">                
                     <?= $userLogin ?>
                 </a>
             </p>

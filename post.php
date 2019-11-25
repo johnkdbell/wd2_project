@@ -1,5 +1,10 @@
 <?php
-    require('connect.php'); 
+    require('connect.php');
+
+    if (session_status() == PHP_SESSION_NONE)
+    {
+        session_start();
+    }
 
     $query = "SELECT * FROM project_blog_posts WHERE postID = :postID LIMIT 1";
     $statement = $db->prepare($query);
@@ -8,33 +13,38 @@
     $statement->execute();
     $post = $statement->fetch();
 
-    
-    if (!empty($_POST['commentContent']))
+    if(isset($_POST['captcha_challenge']) && $_POST['captcha_challenge'] == $_SESSION['captcha_text'])
     {
-        require_once('connect.php');
-        session_start();
-        header("Location: post.php?postID=".$postID);
+        if (!empty($_POST['commentContent']))
+        {
+            require_once('connect.php');
+            session_start();
+            header("Location: post.php?postID=".$postID);
 
-        $postID = $post['postID'];
-        $commentAuthor = $_SESSION['user']['userID'];
-        $commentDate = date('Y-m-d h:i:sa');
+            $postID = $post['postID'];
+            $commentAuthor = $_SESSION['user']['userID'];
+            $commentDate = date('Y-m-d h:i:sa');
+            $commentContent = filter_input(INPUT_POST, 'commentContent', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $query = "INSERT INTO project_blog_comments (postID, commentAuthor, commentDate, commentContent) VALUES (:postID, :commentAuthor, :commentDate, :commentContent)";
+            $commentstatement = $db->prepare($query);
+            $commentstatement->bindValue(':postID', $postID, PDO::PARAM_INT);
+            $commentstatement->bindValue(':commentAuthor', $commentAuthor);
+            $commentstatement->bindValue(':commentDate', $commentDate);
+            $commentstatement->bindValue(':commentContent', $commentContent);
+
+            $commentstatement->execute();
+
+            $setCommentCount = "UPDATE project_blog_posts SET postCommentCount = postCommentCount + 1 WHERE postID = " . $post['postID'];
+            $statement4 = $db->prepare($setCommentCount);
+            $statement4->execute();
+
+
+        }
+    }
+    else
+    {
         $commentContent = filter_input(INPUT_POST, 'commentContent', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        $query = "INSERT INTO project_blog_comments (postID, commentAuthor, commentDate, commentContent) VALUES (:postID, :commentAuthor, :commentDate, :commentContent)";
-        $commentstatement = $db->prepare($query);
-        $commentstatement->bindValue(':postID', $postID, PDO::PARAM_INT);
-        $commentstatement->bindValue(':commentAuthor', $commentAuthor);
-        $commentstatement->bindValue(':commentDate', $commentDate);
-        $commentstatement->bindValue(':commentContent', $commentContent);
-
-        $commentstatement->execute();
-
-        $setCommentCount = "UPDATE project_blog_posts SET postCommentCount = postCommentCount + 1 WHERE postID = " . $post['postID'];
-        $statement4 = $db->prepare($setCommentCount);
-        $statement4->execute();
-
-        exit();
-
     }
 
 
@@ -50,6 +60,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css" type="text/css"> 
+    <script src="https://kit.fontawesome.com/4263976262.js" crossorigin="anonymous"></script>
 </head>
 <body>
                         
@@ -83,13 +94,20 @@
         <label for="commentContent"><h3>Comment: </h3></label>
     </div>
     <div class="row form-element">
-        <textarea class="form-element" id="commentContent" name="commentContent" row="100" cols="200"></textarea>
+        <textarea class="form-element" id="commentContent" name="commentContent" row="100" cols="200"><?= $commentContent ?></textarea>
     </div>
 
     <input type="hidden" id="commentAuthor" name="commentAuthor" value="<?= $_SESSION['user']['userID'] ?>">
     <input type="hidden" id="postID" name="postID">
     <input type="hidden" id="commentDate" name="commentDate">
 
+    <div class="row form-element">
+        <label for="captcha">Please Enter the Captcha Text</label>
+        <img src="captcha.php" alt="CAPTCHA" class="captcha-image"><i class="fas fa-redo refresh-captcha"></i>
+        <br>
+        <input type="text" id="captcha" name="captcha_challenge" pattern="[A-Z]{6}">
+    </div><br>
+    
     <div class="row form-element">
         <input type="submit" value="Comment">
     </div>
@@ -132,7 +150,12 @@
 
     </div>
 
-   
+    <script>
+        var refreshButton = document.querySelector(".refresh-captcha");
+        refreshButton.onclick = function() {
+        document.querySelector(".captcha-image").src = 'captcha.php?' + Date.now();
+        }
+    </script>
 
     <script 
         src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 

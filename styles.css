@@ -15,7 +15,7 @@ div, p, h1, h2, h3
   margin: 0;
 }
 
-img 
+#userAvatar 
 {
   max-height: 2.5em;
   max-width: 2.5em;
