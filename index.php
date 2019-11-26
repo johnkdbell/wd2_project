@@ -77,17 +77,19 @@
                     Please do not say bad things.
                 </p>
                 <p>
-                <div class="buttons">
+                <div class="buttons row">
                     <a class="btn btn-primary btn-lg" href="create.php" role="button">
                         Create New Post
                     </a>
+                    <div class="container float-right d-flex align-self-center">                
                     <?php if(isset($_SESSION['user']['userEmail'])): ?>
-            <form action="index.php" method="get">
-            <input type="submit" name="orderBy" value="newest to oldest" />
-            <input type="submit" name="orderBy" value="oldest to newest" />
-            <input type="submit" name="orderBy" value="author" />
-            <input type="submit" name="orderBy" value="comments" />
-            </form>
+                    <form action="index.php" method="get">
+                    <input type="submit" name="orderBy" value="newest to oldest" />
+                    <input type="submit" name="orderBy" value="oldest to newest" />
+                    <input type="submit" name="orderBy" value="author" />
+                    <input type="submit" name="orderBy" value="comments" />
+                    </form>
+                </div>
             </div>            
         <?php endif; ?>
                 </p>
