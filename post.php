@@ -74,7 +74,7 @@
     
     
     <div class="col">
-        <p class="post-preview"><?= $post['postDate'] ?></p>
+        <p class="post-preview">Date Posted: <?= $post['postDate'] ?></p>
         <form method="post" action="index.php">
             <input type="submit" value="Return">
         </form>
@@ -129,7 +129,7 @@
 
     <br><br>
 
-    <p>Comments:</p>
+    
         <?php
             $commentQuery = "SELECT * FROM project_blog_comments
                              LEFT JOIN project_blog_posts
@@ -148,12 +148,13 @@
             $statement3->execute();
             $userLogin = $statement3->fetch();
         ?>
-        <br>
-        <h3><?= $userLogin['userLogin'] ?></h3>
-        <p><?= $comment['commentContent'] ?></p>
-        <p><?= $comment['commentDate'] ?></p>
 
-        <?php if($_SESSION['user']['userID'] == $comment['commentAuthor'] || $_SESSION['user']['userIsAdmin'] == 1): ?>
+            <br>
+            <h3><?= $userLogin['userLogin'] ?></h3>
+            <p><?= $comment['commentContent'] ?></p>
+            <p><?= $comment['commentDate'] ?></p>
+        
+        <?php if(isset($_SESSION['user']) && $_SESSION['user']['userID'] == $comment['commentAuthor'] || isset($_SESSION['user']) && $_SESSION['user']['userIsAdmin'] == 1): ?>
             <h5><a href="deleteComment.php?commentID=<?= $comment['commentID']?>">Delete</a></h5>
         <?php endif; ?>
         

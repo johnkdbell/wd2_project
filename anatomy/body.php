@@ -25,16 +25,18 @@
                 </div>
 
                 <div class="post-content">
+
+                
                     <!-- Posts Checks Conent Size-->
-                    <?php if (strip_tags(html_entity_decode(strlen($project_blog_posts[$i]['postContent']))) > 200): ?>
+                    <?php /* if (strip_tags(html_entity_decode(strlen($project_blog_posts[$i]['postContent']))) > 200): ?>
                         <?= cutContent($project_blog_posts, $i) ?>
                     
                     <!-- Posts Content-->
-                    <?php else: ?>
+                    <?php else: */ ?>
                         <p>
                             <?= strip_tags(html_entity_decode($project_blog_posts[$i]['postContent'])) ?>
                         </p><br>
-                    <?php endif ?>
+                    <?php /* endif */ ?>
                 </div>
 
                 <!-- Posts User and Date-->

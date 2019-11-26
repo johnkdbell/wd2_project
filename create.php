@@ -55,27 +55,32 @@
             <br>
             <textarea rows="4" cols="50" name="postContent" placeholder="Write your post here..."></textarea>
             <br>
-            <div class="input">            
+
+            <!--            
+            <div class="input">
             <input type="hidden" id="tagID" name="tagID">
             <input type="hidden" id="tagPostID" name="tagPostID" value="<?= $postID ?>">
                 <select name="tagName">
                     <option>Existing tags:</option>
-                    <?php foreach($tags as $tag): ?>
+                    <?php /* foreach($tags as $tag): ?>
                         <option><?= $tag['tagName'] ?></option>
-                    <?php endforeach; ?>
+                    <?php endforeach; */ ?>
                 </select>
 
                 Add a tag:
                 <input type="text" id="tagName" name="tagName">
             </div>
             <br>
-
-            <input type="submit" value="Post">
+            -->
+            <div class="container row">
+                <input type="submit" value="Post">
+                <form method="post" action="index.php">
+                    <input type="submit" value="Return">
+                </form>
+            </div>
         </div>
     </form>
-    <form method="post" action="index.php">
-            <input type="submit" value="Return">
-    </form>
+    
 </div>
 </div>
 

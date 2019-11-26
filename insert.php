@@ -1,7 +1,8 @@
 <?php
 
     require_once('connect.php');
-    session_start();
+    session_start();    
+    header("Location: index.php");
     
 
     $postID = filter_input(INPUT_POST, 'postID', FILTER_SANITIZE_NUMBER_INT);
