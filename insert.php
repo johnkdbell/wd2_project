@@ -9,14 +9,17 @@
     $postHeading = filter_input(INPUT_POST, 'postHeading', FILTER_SANITIZE_SPECIAL_CHARS);
     $postDate = date('Y-m-d h:i:sa');
     $postContent = filter_input(INPUT_POST, 'postContent', FILTER_SANITIZE_SPECIAL_CHARS);
+    $tagName = filter_input(INPUT_POST, 'tagName', FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $query = "INSERT INTO project_blog_posts (postID, userID, postHeading, postDate, postContent) VALUES (:postID, :userID, :postHeading, :postDate, :postContent)";
+    $query = "INSERT INTO project_blog_posts (postID, userID, postHeading, postDate, postContent, tagName) VALUES (:postID, :userID, :postHeading, :postDate, :postContent, :tagName)";
     $statement = $db->prepare($query);
     $statement->bindValue(':postID', $postID);
     $statement->bindValue(':userID', $_SESSION['user']['userID']);
     $statement->bindValue(':postHeading', $postHeading);
     $statement->bindValue(':postDate', $postDate);
     $statement->bindValue(':postContent', $postContent);
+    $statement->bindValue(':tagName', $tagName);
+
 
     $statement->execute();
 

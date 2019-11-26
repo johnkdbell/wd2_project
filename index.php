@@ -45,6 +45,10 @@
         return strip_tags(html_entity_decode($content));
     }
 
+    $tagQuery = "SELECT DISTINCT tagName FROM project_blog_posts ORDER BY tagName";
+    $tagStatement = $db->prepare($tagQuery);
+    $tagStatement->execute();
+    $listedTags = $tagStatement->fetchAll();
 
 ?>
 
@@ -89,7 +93,15 @@
                     <input type="submit" name="orderBy" value="author" />
                     <input type="submit" name="orderBy" value="comments" />
                     </form>
+                    <?php if(isset($_SESSION['user']['userEmail'])): ?>
                 </div>
+                <h6>Select posts by tags:</h6>
+                        <form action="tags.php" method="get">
+                            <?php foreach($listedTags as $tag): ?>
+                                <input type="submit" name="tagName" value=<?= $tag['tagName'] ?> />
+                            <?php endforeach; ?>
+                        </form>
+                     <?php endif; ?>
             </div>            
         <?php endif; ?>
                 </p>
