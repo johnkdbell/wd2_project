@@ -50,7 +50,7 @@
                         
                         <?php if(!isset($_SESSION['user']['userID'])): ?>
                             
-                        <?php elseif($_SESSION['user']['userID'] == $project_blog_posts[$i]['userID']): ?>
+                        <?php elseif($_SESSION['user']['userID'] == $project_blog_posts[$i]['userID'] || $_SESSION['user']['userIsAdmin'] == 1): ?>
                             |
                         <a href="edit.php?postID=<?= $project_blog_posts[$i]['postID']?>">
                             Edit
