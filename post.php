@@ -39,7 +39,6 @@
             $statement4 = $db->prepare($setCommentCount);
             $statement4->execute();
 
-
         }
     }
     else
@@ -65,57 +64,72 @@
 <body>
                         
 <?php include("anatomy/navtop.php"); ?>
-    <div class="container">
-        
-        <h2 class="post-preview"><?= $post['postHeading'] ?></h2>
-        <br>
-        <p class="post-preview"><?= html_entity_decode($post['postContent']) ?></p>
-        <br>
-        <br>
-        
-        <p class="post-preview"><?= $post['postDate'] ?></p>
-        <br>
-        <br>
-        
-        <form method="post" action="post.php?postID=<?=$postID ?>">
-    <div class="row">
-        Commenting as:
-    </div>
-    <div class="row form-element">
-        <?php
-            $userquery2 = "SELECT userLogin FROM project_blog_users WHERE userID = ".$_SESSION['user']['userID'];
-            $stmt3 = $db->prepare($userquery2); // Returns a PDOStatement object.
-            $stmt3->execute(); // The query is now executed.
-            $userdisplayname = $stmt3->fetch();
-        ?>
-        <h6><?= $userdisplayname['userLogin'] ?></h6>
-    </div>
-    <div class="row">
-        <label for="commentContent"><h3>Comment: </h3></label>
-    </div>
-    <div class="row form-element">
-        <textarea class="form-element" id="commentContent" name="commentContent" row="100" cols="200"><?= $commentContent ?></textarea>
-    </div>
 
-    <input type="hidden" id="commentAuthor" name="commentAuthor" value="<?= $_SESSION['user']['userID'] ?>">
-    <input type="hidden" id="postID" name="postID">
-    <input type="hidden" id="commentDate" name="commentDate">
-
-    <div class="row form-element">
-        <label for="captcha">Please Enter the Captcha Text</label>
-        <img src="captcha.php" alt="CAPTCHA" class="captcha-image"><i class="fas fa-redo refresh-captcha"></i>
-        <br>
-        <input type="text" id="captcha" name="captcha_challenge" pattern="[A-Z]{6}">
-    </div><br>
+<div class="container">
     
-    <div class="row form-element">
-        <input type="submit" value="Comment">
+    <h2 class="post-preview"><?= $post['postHeading'] ?></h2>
+    <br>
+    <p class="post-preview"><?= html_entity_decode($post['postContent']) ?></p>
+    <br><br>
+    
+    
+    <div class="col">
+        <p class="post-preview"><?= $post['postDate'] ?></p>
+        <form method="post" action="index.php">
+            <input type="submit" value="Return">
+        </form>
     </div>
-    </form>
+    <br><br>
+    
+    <?php if(isset($_SESSION['user']['userID'])): ?>
+        <form method="post" action="post.php?postID=<?=$postID ?>">
+
+            <!--
+            <div class="row">
+                Commenting as:
+            </div>
+            <div class="row form-element">
+                <?php /*
+                    $userLoginQuery2 = "SELECT userLogin FROM project_blog_users WHERE userID = ". $_SESSION['user']['userID'];
+                    $statement3 = $db->prepare($userLoginQuery2); // Returns a PDOStatement object.
+                    $statement3->execute(); // The query is now executed.
+                    $userLoginName = $statement3->fetch();
+                    
+                ?>
+                <h6><?= $userLoginName['userLogin'] */ ?></h6>
+            </div>
+            -->
+
+            <div class="col">
+                <label for="commentContent"><h3>Comment: </h3></label>
+            </div>
+
+            <textarea class="col" id="commentContent" name="commentContent"><?= $commentContent ?></textarea>
+            <br><br>
+
+            <div>
+            <img src="captcha.php" alt="CAPTCHA" class="captcha-image">
+            <i class="fas fa-redo refresh-captcha"></i>
+            </div>
+
+            <div>
+            <input type="text" id="captcha" name="captcha_challenge" pattern="[A-Z]{6}">
+            <input type="submit" value="Comment">
+            </div>
+
+            <input type="hidden" id="commentAuthor" name="commentAuthor" value="<?= $_SESSION['user']['userID'] ?>">
+            <input type="hidden" id="postID" name="postID">            
+            <input type="hidden" id="commentDate" name="commentDate">
+            
+
+        </form>
+    <?php else: ?>
+        <h4><a href="login.php">Sign in</a> to leave a comment, or feel free to <a href="register.php">Register</a>.</h4>
+    <?php endif; ?>
 
     <br><br>
 
-    <p>Comments</p>
+    <p>Comments:</p>
         <?php
             $commentQuery = "SELECT * FROM project_blog_comments
                              LEFT JOIN project_blog_posts
@@ -134,26 +148,27 @@
             $statement3->execute();
             $userLogin = $statement3->fetch();
         ?>
-
+        <br>
         <h3><?= $userLogin['userLogin'] ?></h3>
         <p><?= $comment['commentContent'] ?></p>
         <p><?= $comment['commentDate'] ?></p>
-        <br>
+
+        <?php if($_SESSION['user']['userID'] == $comment['commentAuthor'] || $_SESSION['user']['userIsAdmin'] == 1): ?>
+            <h5><a href="deleteComment.php?commentID=<?= $comment['commentID']?>">Delete</a></h5>
+        <?php endif; ?>
         
         <?php endforeach; ?>
 
         <br>
-        <br>        
-        <form method="post" action="index.php">
-            <input type="submit" value="Return">
-        </form>
+        <br>       
 
     </div>
 
     <script>
         var refreshButton = document.querySelector(".refresh-captcha");
-        refreshButton.onclick = function() {
-        document.querySelector(".captcha-image").src = 'captcha.php?' + Date.now();
+        refreshButton.onclick = function() 
+        {
+            document.querySelector(".captcha-image").src = 'captcha.php?' + Date.now();
         }
     </script>
 
